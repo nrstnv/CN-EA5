@@ -6,46 +6,84 @@
         xmlns:local="clr-namespace:Aufgabe2"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-<<<<<<< HEAD
-
     <Window.Resources>
-        <DataTemplate x:Key="Contacts">
-            <Border Name="border" BorderBrush="Aqua" BorderThickness="1"
-                    Padding="5" Margin="5">
+        <DataTemplate x:Key="ContactsTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding LastName}" />
+                <TextBlock Grid.Column="1" Text="{Binding FirstName}"/>
+                <TextBlock Grid.Column="2" Text="{Binding Relation}"/>
+            </Grid>
+        </DataTemplate>
+
+        <local:DateConverter x:Key="DateToStringConverter"/>
+
+        <DataTemplate x:Key="DetailTemplate">
+            <Border Width="600" Height="120"
+                    BorderBrush="DarkSlateGray"
+                    BorderThickness="1" Margin="10"
+                    Padding="5">
                 <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="LastName" Text="{Binding Path=LastName}" />
-                    <TextBlock x:Name="Firstname" Text="{Binding Path=FirstName}"/>
-                    <TextBlock x:Name="GroupName" Text="{Binding Path=Relation}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Vorname:"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FirstName}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Nachname:"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding LastName}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="E-Mail:"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Email}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Gebrutsdatum:"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding DateofBirth, Converter={StaticResource DateToStringConverter}}"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Gruppe:"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Relation}"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Border BorderThickness="1" BorderBrush="Black">
+                                <Image Source="{Binding Image}"/>
+                            </Border>
+                    </TextBlock>
                 </Grid>
             </Border>
         </DataTemplate>
     </Window.Resources>
-    <Window.DataContext>
-        <Binding RelativeSource="{RelativeSource Self}"/>
-    </Window.DataContext>
+
     <Grid>
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20 10 20 0">
-                <CheckBox Margin="20,0">Sortieren nach Gruppe</CheckBox>
-                <CheckBox Margin="20,0">Nur Freunde anzeigen</CheckBox>
+                <CheckBox x:Name="SortByGroup" Margin="20,0"
+                          Content="Sortieren nach Gruppe"
+                          Checked="SortByGroup_IsChecked"
+                          Unchecked="SortByGroup_IsUnchecked">
+                </CheckBox>
+                <CheckBox x:Name="FilterFriends" Margin="20,0"
+                          Content="Nur Freunde anzeigen"
+                          Checked="FilterFriends_IsChecked"
+                          Unchecked="FilterFriends_IsUnchecked">
+                </CheckBox>
             </StackPanel>
             <TextBlock Margin="10,18,0,0" FontWeight="Bold">Kontakte:</TextBlock>
             <ListBox Margin="20 10 0 0" Width="600"
                      IsSynchronizedWithCurrentItem="True"
                      BorderBrush="DarkSlateGray" BorderThickness="1"
-                     ItemsSource="{Binding Path=Contacts}" />
-            <TextBlock Margin="10,20,0,0" FontWeight="Bold">Details:</TextBlock>
-            <ContentControl Content="{Binding Path=Contacts.CurrentItem}" />
-        </StackPanel>
-=======
-    <Grid>
+                     ItemsSource="{Binding Path=Contacts}"
+                     ItemTemplate="{StaticResource ContactsTemplate}" />
 
->>>>>>> f8ecc5fbe5f153ee414225b7bdd69e67bcc61b7d
+            <TextBlock Margin="10,20,0,0" FontWeight="Bold">Details:</TextBlock>
+            <ContentControl Content="{Binding Path=Contacts.CurrentItem}"
+                            ContentTemplate="{StaticResource DetailTemplate}"/>
+        </StackPanel>
     </Grid>
 </Window>
