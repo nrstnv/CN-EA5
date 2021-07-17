@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
 using System.ComponentModel;
-=======
->>>>>>> f8ecc5fbe5f153ee414225b7bdd69e67bcc61b7d
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +21,9 @@ namespace Aufgabe2
     /// </summary>
     public partial class MainWindow : Window
     {
-<<<<<<< HEAD
-        private Contacts _contacts;
-        private ICollectionView _view;
+
+        private readonly Contacts _contacts;
+        private readonly ICollectionView _view;
 
         public MainWindow()
         {
@@ -42,11 +39,51 @@ namespace Aufgabe2
             get { return _view; }
         }
 
-=======
-        public MainWindow()
+        /// <summary>
+        /// Kontakte gruppieren.
+        /// Bei der Auswahl der Checkbox wird zur 
+        /// ICollectionView.GroupDescriptions-Eigenschaft der Ansicht ein geeignetes
+        /// PropertyGroupDescription-Objekt hinzugefügt.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SortByGroup_IsChecked(object sender, RoutedEventArgs e)
         {
-            InitializeComponent();
+            _view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(Person.Relation)));
         }
->>>>>>> f8ecc5fbe5f153ee414225b7bdd69e67bcc61b7d
+
+        /// <summary>
+        /// Gruppierung aufheben.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SortByGroup_IsUnchecked(object sender, RoutedEventArgs e)
+        {
+            _view.GroupDescriptions.Clear();
+        }
+
+        /// <summary>
+        /// Kontakte nach Freunden filtern.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FilterFriends_IsChecked(object sender, RoutedEventArgs e)
+        {
+            _view.Filter = new Predicate<object>(delegate (object o)
+            {
+                Person person = o as Person;
+                return person.Relation == Relationship.Friend;
+            });
+        }
+
+        /// <summary>
+        /// Filterung aufheben.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void FilterFriends_IsUnchecked(object sender, RoutedEventArgs e)
+        {
+            _view.Filter = null;
+        }
     }
 }
