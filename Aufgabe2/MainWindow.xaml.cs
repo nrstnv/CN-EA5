@@ -25,8 +25,8 @@ namespace Aufgabe2
         private readonly Contacts _contacts;
         private readonly ICollectionView _view;
 
-        private readonly Contacts _contacts;
-        private readonly ICollectionView _view;
+        //private readonly Contacts _contacts;
+        //private readonly ICollectionView _view;
 
         public MainWindow()
         {
